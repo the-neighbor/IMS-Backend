@@ -138,11 +138,8 @@ public class OrderService {
 
     public OrderDTO deleteOrder(UUID orderId) {
         Order order = orderRepository.getReferenceById(orderId);
-        orderRepository.delete(order);
-
         OrderDTO orderDTO = convertOrderToOrderDTO(order);
-//        List<OrderProduct> orderProducts = orderProductRepository.findAllByOrderId(order.getOrderId());
-//        orderProductRepository.deleteAll(orderProducts);
+        orderRepository.delete(order);
         return orderDTO;
     }
 
