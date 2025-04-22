@@ -8,7 +8,7 @@ import java.util.List;
 @FeignClient(
         name = "UserAuth",
         url = "http://localhost:9890",
-        path = "/security/"
+        path = "/security"
 )
 public interface UserClient {
     @GetMapping("/users")
