@@ -1,0 +1,172 @@
+version: '1'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: cogentsecurerootpassword
+      MYSQL_DATABASE: capstone
+      MYSQL_USER: cogent
+      MYSQL_PASSWORD: cogent
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysq_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+
+  client:
+    container_name: client-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/client:latest
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+  gateway:
+    container_name: gateway-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/gateway:latest
+    ports:
+        - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+  user-auth:
+    container_name: userauth-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/userauth:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "9890:9890"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+  order-manager:
+    container_name: ordermanager-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/ordermanager:latest
+    depends_on:
+        mysql:
+          condition: service_healthy
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+  inventory-tracking:
+    container_name: inventorytracking-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/inventorytracking:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+  supplier:
+    container_name: supplier-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/supplier:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+  sale-manager:
+    container_name: salemanager-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/salemanager:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8099:8099"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+  seed-service:
+    container_name: seedservice-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/seedservice:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "9999:9999"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+  product-management:
+    container_name: productmanagement-app
+    image: 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/productmanagement:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/capstone
+      SPRING_DATASOURCE_USERNAME : cogent
+      SPRING_DATASOURCE_PASSWORD : cogent
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://client:8761/eureka
+
+volumes:
+  mysq_data:  # Define the mysq_data volume
+    driver: local

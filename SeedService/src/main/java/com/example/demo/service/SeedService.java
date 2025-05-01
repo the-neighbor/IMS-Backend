@@ -133,6 +133,9 @@ public class SeedService {
     }
     public void addSeedProducts(){
         List<Product> seedProducts = getSeedProducts();
+        if (suppliers.isEmpty()) {
+        	suppliers = supplierRepository.findAll();
+        }
         for (Product product : seedProducts) {
             ProductEntity productEntity = new ProductEntity();
             productEntity.setSku(new Random().nextInt(0,Integer.MAX_VALUE));
@@ -354,44 +357,44 @@ public class SeedService {
     public static List<Product> getSeedProducts() {
         List<Product> products = new ArrayList<>();
 
-        // Electronics
-        products.add(new Product("Sony WH-1000XM5 Wireless Headphones", "Industry-leading noise canceling headphones with premium sound quality and long battery life.", 230.00, 399.99, "Electronics"));
-        products.add(new Product("Apple Watch Series 9", "Advanced smartwatch with fitness tracking, ECG, and seamless integration with iPhone.", 320.00, 429.00, "Electronics"));
-        products.add(new Product("Samsung Galaxy Tab S9", "High-performance Android tablet with a vivid AMOLED display and S Pen support.", 500.00, 699.99, "Electronics"));
-        products.add(new Product("JBL Flip 6 Bluetooth Speaker", "Portable waterproof speaker with powerful bass and 12 hours of playtime.", 70.00, 129.95, "Electronics"));
-        products.add(new Product("SanDisk 1TB External SSD", "Compact, durable solid-state drive with fast transfer speeds and 1TB capacity.", 90.00, 139.99, "Electronics"));
-        products.add(new Product("DJI Mini 3 Pro Drone", "Lightweight drone with 4K video, obstacle sensing, and intelligent flight modes.", 600.00, 759.00, "Electronics"));
-        products.add(new Product("Anker Wireless Charging Pad", "Fast wireless charger compatible with Qi-enabled devices, with a slim, sleek design.", 12.00, 19.99, "Electronics"));
-        products.add(new Product("TP-Link Archer AX55 Wi-Fi Router", "Dual-band Wi-Fi 6 router with high-speed performance and wide coverage.", 80.00, 129.99, "Electronics"));
-
-        // Fashion & Apparel
-        products.add(new Product("Nike Air Max 270", "Stylish running shoes with visible Air cushioning and breathable mesh upper.", 90.00, 160.00,"Fashion & Apparel"));
-        products.add(new Product("Levi’s Trucker Denim Jacket", "Classic denim jacket with a regular fit, button-front closure, and signature Levi’s style.", 45.00, 89.50,"Fashion & Apparel"));
-        products.add(new Product("Herschel Little America Backpack", "Modern laptop backpack with a spacious design and signature striped liner.", 60.00, 109.99,"Fashion & Apparel"));
-        products.add(new Product("The North Face ThermoBall Vest", "Insulated, lightweight vest ideal for layering in cold conditions.", 80.00, 149.00,"Fashion & Apparel"));
-        products.add(new Product("Adidas Ultraboost 22", "High-performance running shoes with responsive cushioning and adaptive knit upper.", 95.00, 190.00,"Fashion & Apparel"));
-        products.add(new Product("Columbia Newton Ridge Hiking Boots", "Durable waterproof hiking boots with great traction and ankle support.", 65.00, 99.99,"Fashion & Apparel"));
-        products.add(new Product("Carhartt Rugged Flex Cargo Pants", "Tough, flexible work pants with multiple pockets for tools and gear.", 30.00, 54.99,"Fashion & Apparel"));
-        products.add(new Product("Ray-Ban Wayfarer Sunglasses", "Iconic sunglasses with a durable frame and polarized lens options.", 80.00, 163.00,"Fashion & Apparel"));
-
-        // Home & Living
-        products.add(new Product("COSORI Electric Kettle", "Fast-boiling stainless steel electric kettle with auto shut-off and boil-dry protection.", 25.00, 39.99, "Home & Living"));
-        products.add(new Product("Brooklinen Luxe Core Sheet Set", "Luxury cotton sheets with a silky-smooth finish and long-lasting comfort.", 85.00, 159.00, "Home & Living"));
-        products.add(new Product("TaoTronics LED Desk Lamp", "Dimmable LED desk lamp with touch controls and USB charging port.", 18.00, 35.99, "Home & Living"));
-        products.add(new Product("Caraway Nonstick Cookware Set", "Eco-friendly nonstick pots and pans with a ceramic coating and modern design.", 250.00, 395.00, "Home & Living"));
-        products.add(new Product("Yankee Candle Balsam & Cedar", "Classic holiday-scented candle with a long-lasting, fresh woodsy fragrance.", 15.00, 28.00, "Home & Living"));
-        products.add(new Product("Brita Water Filter Pitcher", "Water filtration pitcher that reduces chlorine, lead, and other impurities.", 18.00, 36.99, "Home & Living"));
-        products.add(new Product("UGG Avery Reversible Throw Blanket", "Soft and cozy reversible blanket made from plush polyester fleece.", 20.00, 49.99, "Home & Living"));
-        products.add(new Product("Umbra Conceal Floating Bookshelves", "Minimalist floating shelves that create the illusion of books hanging on the wall.", 12.00, 24.00, "Home & Living"));
-
-        // Beauty & Wellness
-        products.add(new Product("The Ordinary Niacinamide 10% + Zinc 1%", "High-strength serum that targets blemishes and balances oil production.", 4.00, 7.50, "Beauty & Wellness"));
-        products.add(new Product("Vitruvi Stone Diffuser", "Ceramic essential oil diffuser with ultrasonic technology for calming aromas.", 75.00, 123.00, "Beauty & Wellness"));
-        products.add(new Product("Olaplex No. 3 Hair Perfector", "At-home treatment that repairs damaged hair and strengthens from within.", 20.00, 30.00, "Beauty & Wellness"));
-        products.add(new Product("Native Coconut & Vanilla Deodorant", "Aluminum-free natural deodorant with a refreshing coconut vanilla scent.", 6.00, 12.00, "Beauty & Wellness"));
-        products.add(new Product("Revlon Jade Facial Roller", "Dual-ended jade roller that helps reduce puffiness and improve skin tone.", 6.00, 15.99, "Beauty & Wellness"));
-        products.add(new Product("Ritual Essential Multivitamins", "Daily vitamins with clean ingredients and traceable sourcing, tailored for adults.", 20.00, 33.00, "Beauty & Wellness"));
-        products.add(new Product("CeraVe Moisturizing Lotion", "Dermatologist-recommended lotion with ceramides for all-day hydration.", 8.00, 16.99, "Beauty & Wellness"));
+//        // Electronics
+//        products.add(new Product("Sony WH-1000XM5 Wireless Headphones", "Industry-leading noise canceling headphones with premium sound quality and long battery life.", 230.00, 399.99, "Electronics"));
+//        products.add(new Product("Apple Watch Series 9", "Advanced smartwatch with fitness tracking, ECG, and seamless integration with iPhone.", 320.00, 429.00, "Electronics"));
+//        products.add(new Product("Samsung Galaxy Tab S9", "High-performance Android tablet with a vivid AMOLED display and S Pen support.", 500.00, 699.99, "Electronics"));
+//        products.add(new Product("JBL Flip 6 Bluetooth Speaker", "Portable waterproof speaker with powerful bass and 12 hours of playtime.", 70.00, 129.95, "Electronics"));
+//        products.add(new Product("SanDisk 1TB External SSD", "Compact, durable solid-state drive with fast transfer speeds and 1TB capacity.", 90.00, 139.99, "Electronics"));
+//        products.add(new Product("DJI Mini 3 Pro Drone", "Lightweight drone with 4K video, obstacle sensing, and intelligent flight modes.", 600.00, 759.00, "Electronics"));
+//        products.add(new Product("Anker Wireless Charging Pad", "Fast wireless charger compatible with Qi-enabled devices, with a slim, sleek design.", 12.00, 19.99, "Electronics"));
+//        products.add(new Product("TP-Link Archer AX55 Wi-Fi Router", "Dual-band Wi-Fi 6 router with high-speed performance and wide coverage.", 80.00, 129.99, "Electronics"));
+//
+//        // Fashion & Apparel
+//        products.add(new Product("Nike Air Max 270", "Stylish running shoes with visible Air cushioning and breathable mesh upper.", 90.00, 160.00,"Fashion & Apparel"));
+//        products.add(new Product("Levi’s Trucker Denim Jacket", "Classic denim jacket with a regular fit, button-front closure, and signature Levi’s style.", 45.00, 89.50,"Fashion & Apparel"));
+//        products.add(new Product("Herschel Little America Backpack", "Modern laptop backpack with a spacious design and signature striped liner.", 60.00, 109.99,"Fashion & Apparel"));
+//        products.add(new Product("The North Face ThermoBall Vest", "Insulated, lightweight vest ideal for layering in cold conditions.", 80.00, 149.00,"Fashion & Apparel"));
+//        products.add(new Product("Adidas Ultraboost 22", "High-performance running shoes with responsive cushioning and adaptive knit upper.", 95.00, 190.00,"Fashion & Apparel"));
+//        products.add(new Product("Columbia Newton Ridge Hiking Boots", "Durable waterproof hiking boots with great traction and ankle support.", 65.00, 99.99,"Fashion & Apparel"));
+//        products.add(new Product("Carhartt Rugged Flex Cargo Pants", "Tough, flexible work pants with multiple pockets for tools and gear.", 30.00, 54.99,"Fashion & Apparel"));
+//        products.add(new Product("Ray-Ban Wayfarer Sunglasses", "Iconic sunglasses with a durable frame and polarized lens options.", 80.00, 163.00,"Fashion & Apparel"));
+//
+//        // Home & Living
+//        products.add(new Product("COSORI Electric Kettle", "Fast-boiling stainless steel electric kettle with auto shut-off and boil-dry protection.", 25.00, 39.99, "Home & Living"));
+//        products.add(new Product("Brooklinen Luxe Core Sheet Set", "Luxury cotton sheets with a silky-smooth finish and long-lasting comfort.", 85.00, 159.00, "Home & Living"));
+//        products.add(new Product("TaoTronics LED Desk Lamp", "Dimmable LED desk lamp with touch controls and USB charging port.", 18.00, 35.99, "Home & Living"));
+//        products.add(new Product("Caraway Nonstick Cookware Set", "Eco-friendly nonstick pots and pans with a ceramic coating and modern design.", 250.00, 395.00, "Home & Living"));
+//        products.add(new Product("Yankee Candle Balsam & Cedar", "Classic holiday-scented candle with a long-lasting, fresh woodsy fragrance.", 15.00, 28.00, "Home & Living"));
+//        products.add(new Product("Brita Water Filter Pitcher", "Water filtration pitcher that reduces chlorine, lead, and other impurities.", 18.00, 36.99, "Home & Living"));
+//        products.add(new Product("UGG Avery Reversible Throw Blanket", "Soft and cozy reversible blanket made from plush polyester fleece.", 20.00, 49.99, "Home & Living"));
+//        products.add(new Product("Umbra Conceal Floating Bookshelves", "Minimalist floating shelves that create the illusion of books hanging on the wall.", 12.00, 24.00, "Home & Living"));
+//
+//        // Beauty & Wellness
+//        products.add(new Product("The Ordinary Niacinamide 10% + Zinc 1%", "High-strength serum that targets blemishes and balances oil production.", 4.00, 7.50, "Beauty & Wellness"));
+//        products.add(new Product("Vitruvi Stone Diffuser", "Ceramic essential oil diffuser with ultrasonic technology for calming aromas.", 75.00, 123.00, "Beauty & Wellness"));
+//        products.add(new Product("Olaplex No. 3 Hair Perfector", "At-home treatment that repairs damaged hair and strengthens from within.", 20.00, 30.00, "Beauty & Wellness"));
+//        products.add(new Product("Native Coconut & Vanilla Deodorant", "Aluminum-free natural deodorant with a refreshing coconut vanilla scent.", 6.00, 12.00, "Beauty & Wellness"));
+//        products.add(new Product("Revlon Jade Facial Roller", "Dual-ended jade roller that helps reduce puffiness and improve skin tone.", 6.00, 15.99, "Beauty & Wellness"));
+//        products.add(new Product("Ritual Essential Multivitamins", "Daily vitamins with clean ingredients and traceable sourcing, tailored for adults.", 20.00, 33.00, "Beauty & Wellness"));
+//        products.add(new Product("CeraVe Moisturizing Lotion", "Dermatologist-recommended lotion with ceramides for all-day hydration.", 8.00, 16.99, "Beauty & Wellness"));
         products.add(new Product("Neutrogena Foaming Facial Cleanser", "Gentle foaming cleanser that removes oil and makeup without over-drying.", 4.00, 9.49, "Beauty & Wellness"));
 
         // Toys & Games

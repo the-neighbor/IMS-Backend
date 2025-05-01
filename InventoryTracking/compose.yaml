@@ -12,7 +12,15 @@ services:
 #      - mysq_data:/var/lib/mysql
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+      - 162841171422.dkr.ecr.us-east-1.amazonaws.com/m-m.institute/ims/backend/inventorytracking:latest
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
 #    depends_on:
 #      - mysql
     ports:

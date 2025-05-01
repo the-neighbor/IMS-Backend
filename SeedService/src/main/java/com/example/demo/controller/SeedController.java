@@ -43,6 +43,15 @@ public class SeedController {
         response.put("successful", "true");
         return response;
     }
+    @GetMapping("/inventories")
+    public Map<String, String> seedInventories() {
+        seedService.addSeedInventories();
+        HashMap<String, String> response = new HashMap<String,String>();
+        response.put("message", "Seeding completed");
+        response.put("data", "Seeding completed");
+        response.put("successful", "true");
+        return response;
+    }
     @GetMapping("/users")
     public Map<String, String> seedUsers() {
         seedService.generateUsers();

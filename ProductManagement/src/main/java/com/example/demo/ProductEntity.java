@@ -36,7 +36,7 @@ public class ProductEntity {
 	private double sellPrice = 0.0;
 	@Column
 	private int supplierId;
-	@Column
+	@Column(length = 1024)
 	private String imageUrl;
 	@Column
 	private String category;

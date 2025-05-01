@@ -2,6 +2,7 @@ package com.example.demo;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,7 +25,9 @@ public class UserCredential {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	@Column(unique = true)
 	private String email;
+	@Column(nullable = false)
 	private String password;
 	private boolean alertsEnabled = true;
 
